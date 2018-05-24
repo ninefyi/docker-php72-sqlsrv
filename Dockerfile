@@ -20,11 +20,13 @@ RUN apt-get update \
         msodbcsql \
         unixodbc-dev
 
-RUN apt-get install -y libpng-dev
+RUN apt-get install -y libpng-dev libzip-dev zip
 
-RUN docker-php-ext-install gd mbstring pdo pdo_mysql \
+RUN docker-php-ext-configure zip --with-libzip
+
+RUN docker-php-ext-install zip gd mbstring pdo pdo_mysql \
     && pecl install sqlsrv pdo_sqlsrv xdebug \
-    && docker-php-ext-enable sqlsrv pdo_sqlsrv xdebug gd
+    && docker-php-ext-enable sqlsrv pdo_sqlsrv xdebug gd zip
 
 ADD www /var/www/html
 ADD apache-config.conf /etc/apache2/sites-available/000-default.conf
@@ -38,7 +40,7 @@ RUN a2enmod rewrite
 # RUN composer update
 
 # INSTALL LARAVEL
-RUN composer create-project --prefer-dist laravel/laravel .
+RUN composer create-project --prefer-dist laravel/laravel test
 
 # RUN chmod 777 -R /var/www/html/storage && chmod 777 -R /var/www/html/bootstrap/cache
 # RUN php artisan config:clear && php artisan config:cache
