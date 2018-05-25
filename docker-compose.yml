@@ -5,3 +5,5 @@ services:
     container_name: "laravel56"
     ports:
       - "56:80"
+    volumes:
+      - ./www/:/var/www/html
