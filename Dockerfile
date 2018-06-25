@@ -28,6 +28,7 @@ RUN docker-php-ext-install zip gd mbstring pdo pdo_mysql \
    && pecl install sqlsrv pdo_sqlsrv xdebug \
    && docker-php-ext-enable sqlsrv pdo_sqlsrv xdebug gd zip
 
+
 # RUN docker-php-ext-install zip gd mbstring pdo pdo_mysql \
 #     && pecl install xdebug \
 #     && docker-php-ext-enable xdebug gd zip
@@ -47,6 +48,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # RUN composer create-project --prefer-dist laravel/laravel .
 RUN chmod 777 -R /var/www/html/storage && chmod 777 -R /var/www/html/bootstrap/cache
 RUN php artisan config:clear && php artisan config:cache
+
+RUN apt-get upgrade -y
+
+RUN wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u8_amd64.deb
+RUN dpkg -i libssl1.0.0_1.0.1t-1+deb8u8_amd64.deb
+
 
 # INSTALL Excel
 # RUN composer require maatwebsite/excel
